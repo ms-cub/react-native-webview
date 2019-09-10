@@ -390,12 +390,11 @@ static NSURLCredential* clientAuthenticationCredential;
         [_webView loadHTMLString:@"" baseURL:nil];
         return;
     }
-    if (request.URL.host) {
-        [_webView loadRequest:request];
+    if([request.URL.scheme isEqualToString:@"file"]) {
+        [_webView loadFileURL:request.URL allowingReadAccessToURL:[request.URL URLByDeletingLastPathComponent]];
+        return;
     }
-    else {
-        [_webView loadFileURL:request.URL allowingReadAccessToURL:request.URL];
-    }
+    [_webView loadRequest:request];
 }
 
 -(void)setKeyboardDisplayRequiresUserAction:(BOOL)keyboardDisplayRequiresUserAction
